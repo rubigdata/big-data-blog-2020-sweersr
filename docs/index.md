@@ -8,7 +8,7 @@ ___
 Table of contents:
 ___
 
-* [This is a link](something.html)
+* [This is a link](something.md)
 
 
 
