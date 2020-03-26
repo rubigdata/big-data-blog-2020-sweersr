@@ -8,7 +8,8 @@ ___
 Table of contents:
 ___
 
-* [This is a link](something.md)
+* [Assignment 1 blog](something.html)
+* [Assignment 2 blog](assignment2.md)
 
 
 
