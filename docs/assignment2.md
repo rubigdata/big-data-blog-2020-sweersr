@@ -67,8 +67,8 @@ public static class TokenizerMapper
                     ) throws IOException, InterruptedException {
       String line = value.toString();
       char[] carr = line.toCharArray();
-      for (charc : carr) {            
-      System.out.println(c);context.write(new Text(String.valueOf(c)), one);        
+      for (charc : carr) {  
+      context.write(new Text(String.valueOf(c)), one);        
       }
     }
   }
