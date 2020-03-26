@@ -2,13 +2,14 @@
 Assignment 2 - Map Reduce
 ---
 
+In this assignment we are going to take a look at the "Hello World" of map reduce: Word count. We do this using HDFS. First we have to format our filesystem and create a user directory. We do this using the `dfs` command, this command lets me use filesystem commands on the hadoop supported file system. Once this is done we can do some map reduce! 
 
 
 ---
 Counting Romeo & Juliet
 ---
 
-Using map reduce we can easily count the occurences of all words in the complete works of Shakespeare. We do this using the following mapper:
+Using map reduce I can easily count the occurences of all words in the complete works of Shakespeare. We do this using the following mapper:
 
 ```java
 
