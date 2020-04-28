@@ -13,4 +13,4 @@ ___
 
 [ASSIGNMENT2][A2]
 
-[A2]: ASSIGNMENT2.html "ASSIGNMENT2"
+[A2]: assignment2 "ASSIGNMENT2"
