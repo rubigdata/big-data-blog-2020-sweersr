@@ -72,5 +72,7 @@ public static class TokenizerMapper
 
 Using this mapper we transform the text in an array of all of its characters and loop over this array, the output of the mapper is structured exactly the same as before, therefore we can use the same reducer. Using this mapper I found that the letter "e" is the most used letter in shakespeare's work, no surprises there!
 
+[Home](https://rubigdata.github.io/big-data-blog-2020-sweersr/)
+
 
 
