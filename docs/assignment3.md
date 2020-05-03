@@ -5,3 +5,6 @@ In this blogpost we will take a first look into spark, specifically we will look
 ## The RDD
 Spark is designed specifically for 'Big Data' projects and uses Resilient Distributed Datasets to do so. The RDD is a dataset home to Spark that partitions its data such that parallelization can be used to up processing speed easily.
 
+## Lazy evaluation
+Spark makes a difference between so called 'actions' and 'transformations', The actions produce actual output whilst the transformations morph our dataset into a different shape. An action one can think of would be something like ``.count``, while 
+
