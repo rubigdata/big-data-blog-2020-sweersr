@@ -1,5 +1,4 @@
-More about me!
-==============
+# More about me!
 
 Next to being an enthusiastic student, I am the bass player of a band called [Sarah Jurassica Parker](https://sarahjurassicaparker.bandcamp.com/), have a listen!
 

@@ -16,4 +16,8 @@ You can use explicit links, e.g., to the [course site](https://rubigdata.github.
 
 And lots more, to see what you can do with Markdown (including images, and tables) take a look at the [Cheatsheet][cheat] (an example of a very useful feature to separate actual links from their references in your text).
 
+[link to assignment 2][link]
+
 [cheat]:        https://github.com/adam-p/markdown-here/wiki/Markdown-Here-Cheatsheet   "Markdown cheatsheet"
+
+[link]: https://github.com/rubigdata/big-data-blog-2020-sweersr/tree/master/docs/assignment2
