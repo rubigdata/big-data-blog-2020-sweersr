@@ -50,3 +50,7 @@ val words = lines.flatMap(line => line.split(" "))
 ```
 
 If we now use the same filter with "macbeth" instead of "Macbeth" we find 285 occurences of Macbeth in stead of the 30 we would have found otherwise.
+
+Thanks for reading and stay healthy!
+
+[Home](https://rubigdata.github.io/big-data-blog-2020-sweersr/)
