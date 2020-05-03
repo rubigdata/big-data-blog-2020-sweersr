@@ -4,9 +4,5 @@ Hey, this is Rik Sweers (s4121112), just finished a bachelor programm in both ch
 
 ## Table of contents:
 
-* [About me](something.md)
-* [Assignment 2 blog](assignment2.md)
-
-Or HTML:
 * [About me](something.html)
-* [Assignment 2 blog](assignment2.html)
+* [Hello Hadoop!](assignment2.html)
