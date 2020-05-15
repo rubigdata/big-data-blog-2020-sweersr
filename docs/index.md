@@ -7,3 +7,4 @@ Hey, this is Rik Sweers (s4121112), just finished a bachelor programm in both ch
 * [About me](something.html)
 * [Hello Hadoop!](assignment2.html)
 * [Lets Spark things up!](assignment3.html)
+* [We did some ML too!](https://rubigdata.github.io/big-data-blog-2020-MauiGonzo/ASSIGNMENT4.html)
