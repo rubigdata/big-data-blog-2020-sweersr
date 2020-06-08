@@ -13,3 +13,162 @@ The data stream used in this assignment as mentioned before isn't an actual data
   .option("port", 9999)
   .load()
   ```
+  This gives us a DataFrame like object, that we can differentiate from regulare DataFrames using the ```.isStreaming``` method. Now we can start processing the DataStream, in order to do so multiple strategies can be applied.
+  
+## In memory stream processing
+
+The first strategie looked into is called 'In memory stream processing'. In this method we simply sample the stream for a while  and process the data obtained in this length of time. After streaming for a second, I obtained a list of items, the first 10 items are displayed below:
+
+```
++--------------------------------------+
+|value                                 |
++--------------------------------------+
+|Iron Hatchet was sold for 100207gp    |
+|Bronze Hatchet was sold for 50237gp   |
+|Rune Battleaxe was sold for 426159gp  |
+|Bronze Hatchet was sold for 49587gp   |
+|Black Defender was sold for 320392gp  |
+|Adamant Scimitar was sold for 279652gp|
+|Mithril Pickaxe was sold for 379537gp |
+|Dragon Warhammer was sold for 509788gp|
+|Iron Defender was sold for 160268gp   |
+|Bronze Sword was sold for 37012gp     |
++--------------------------------------+
+```
+
+This is all fine and dandy, but data formatted this way isn't very usefull. It would be much nicer if we can seperate the materialtype, itemtype and costs in different columns so we could perform further analysiss using sql. To do so we use the following parser:
+
+```scala
+import spark.implicits._
+
+case class RuneData(material: String, tpe: String, price: Integer)
+
+val myregex = "\"^([A-Z].+) ([A-Z].+) was sold for (\\\\d+)\""
+val q = f"select regexp_extract(value, $myregex%s, 1) as material, regexp_extract(value, $myregex%s, 2) as tpe, cast(regexp_extract(value, $myregex%s, 3) as Integer) as price from memoryDF"
+```
+
+Using a smart regex we can filter out all information we don't need and split it into three types. For some reason the ```import spark.implicits._``` was need here, even though it was imported at the beginning of the notebook already.
+
+Using this parser we can display our data as follows:
+
+```
++--------+---------+------+
+|material|tpe      |price |
++--------+---------+------+
+|Iron    |Hatchet  |100207|
+|Bronze  |Hatchet  |50237 |
+|Rune    |Battleaxe|426159|
+|Bronze  |Hatchet  |49587 |
+|Black   |Defender |320392|
+|Adamant |Scimitar |279652|
+|Mithril |Pickaxe  |379537|
+|Dragon  |Warhammer|509788|
+|Iron    |Defender |160268|
+|Bronze  |Sword    |37012 |
++--------+---------+------+
+```
+
+## Continous stream processing 
+
+So we have done our first processing, however this way we can only capture a small ammount of data whilst continous processing might be necessary. Luckily this can be done using the console output, starting a stream as follows:
+
+```scala
+val consoleQuery = socketDF
+  .writeStream
+  .outputMode("append")
+  .format("console")
+  .start()
+  ```
+
+This way we read our stream in batches of multiple items, making it possible to process a continous stream. The currently streamed data can be displayed using ```spark.streams.active``` . Using the same parser as before we can easily transform our data to a more manageable format.
+
+## Writing to disk
+
+In a more realistic setting we potentially have to deal with huge ammounts of data we might want to store for a longer time, writing it to disk therefore is essential. Of course there is a simple solution for this:
+
+```scala
+val streamWriterDisk = runes
+  .writeStream
+  .outputMode("append")
+  .option("checkpointLocation", "/tmp/checkpoint")
+  .trigger(Trigger.ProcessingTime("2 seconds"))
+  .start("/bigdata")
+  ```
+  
+Using this piece of code we can write the streamed data directly to disk in batches of 2 seconds worth of data. We can again use the same parser to transform our data to a usefull format. Time to finally do some analysis!
+
+## Analysiss
+
+After collecting about 5MB worth of data we can do some analysis using SQL. We first took a look at some simple queries to find the average price for each material, the cheapest and the most expensive item. However, some more interesting options are possible to. Lets start with finding out how many items were sold of a specific material, lets say Rune:
+
+```scala
+spark.sql("select count(*) as Runes_sold from runes where material='Rune'").show()
+```
+
+This line of codes directly tells us a total of 7026 rune items were sold within this 5MB of data. We can also look how much of each itemtype has been sold:
+
+```scala
+spark.sql("select tpe as Item, count(*) as Number from runes group by tpe").show
+```
+
+Which results into:
+
+```
++----------------+------+
+|            Item|Number|
++----------------+------+
+|           Sword|  4120|
+|           Hasta|  4228|
+|Two-handed sword|  4147|
+|         Hatchet|  4143|
+|          Dagger|  4238|
+|         Halberd|  4130|
+|        Defender|  4285|
+|       Warhammer|  4105|
+|           Spear|  4090|
+|       Longsword|  4124|
+|            Mace|  4208|
+|       Battleaxe|  4105|
+|           Claws|  4095|
+|        Scimitar|  4246|
+|         Pickaxe|  4242|
++----------------+------+
+```
+
+The total amount of gp that was obtained by selling swords (750153576):
+
+```scala
+spark.sql("select sum(price) as Total_sword_gold FROM runes where tpe='Sword'").show()
+```
+
+However, my sql was a bit rusty, so it was hard to get much more creative, so finally as a beginning swords merchant it might be nice to order the different swordtypes by average price:
+
+```scala
+spark.sql("select material, count(*) as Number_of_swords, avg(price) as Average_price from runes where tpe= 'Sword' group by material order by Average_price").show()
+```
+
+Resulting in:
+
+```
++--------+----------------+------------------+
+|material|Number_of_swords|     Average_price|
++--------+----------------+------------------+
+|  Bronze|             443| 36655.91422121896|
+|    Iron|             441|  73322.8820861678|
+|   Steel|             506|110013.12648221344|
+|   Black|             467| 146646.3897216274|
+|   White|             449| 183346.7483296214|
+| Mithril|             489|220008.37014314928|
+| Adamant|             451| 256692.0421286031|
+|    Rune|             454| 293311.9074889868|
+|  Dragon|             420| 329977.6404761905|
++--------+----------------+------------------+
+```
+
+[Home](index.html)
+
+
+
+
+
+
