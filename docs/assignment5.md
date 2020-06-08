@@ -19,7 +19,19 @@ The data stream used in this assignment as mentioned before isn't an actual data
 
 The first strategie looked into is called 'In memory stream processing'. In this method we simply sample the stream for a while  and process the data obtained in this length of time. After streaming for a second, I obtained a list of items, the first 10 items are displayed below:
 
-```
+```+--------+----------------+------------------+
+|material|Number_of_swords|     Average_price|
++--------+----------------+------------------+
+|  Bronze|             443| 36655.91422121896|
+|    Iron|             441|  73322.8820861678|
+|   Steel|             506|110013.12648221344|
+|   Black|             467| 146646.3897216274|
+|   White|             449| 183346.7483296214|
+| Mithril|             489|220008.37014314928|
+| Adamant|             451| 256692.0421286031|
+|    Rune|             454| 293311.9074889868|
+|  Dragon|             420| 329977.6404761905|
++--------+----------------+------------------+
 +--------------------------------------+
 |value                                 |
 +--------------------------------------+
@@ -164,6 +176,8 @@ Resulting in:
 |  Dragon|             420| 329977.6404761905|
 +--------+----------------+------------------+
 ```
+THanks for reading!
+
 
 [Home](index.html)
 
